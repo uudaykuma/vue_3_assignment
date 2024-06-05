@@ -2,7 +2,9 @@
   <div id="app">
     <nav class="navbar">
       <div class="navbar-left">
-        <router-link to="/"><img src="@/assets/logo.png" alt="Logo" class="logo" /></router-link>
+        <router-link to="/"
+          ><img src="@/assets/logo.png" alt="Logo" class="logo"
+        /></router-link>
       </div>
       <div class="navbar-right">
         <router-link to="/">Home</router-link>
@@ -15,8 +17,8 @@
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App",
+};
 </script>
 
 <style>

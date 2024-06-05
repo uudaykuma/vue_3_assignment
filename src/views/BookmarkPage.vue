@@ -1,7 +1,7 @@
 <template>
   <div v-if="loading">
-      <skelton-loading />
-    </div>
+    <skelton-loading />
+  </div>
   <div v-else class="bookmark-container">
     <div class="news-card-container">
       <news-card
@@ -13,10 +13,10 @@
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
 import NewsCard from "@/components/NewsCard.vue";
-import SkeltonLoading from '@/components/SkeltonLoading.vue';
+import SkeltonLoading from "@/components/SkeltonLoading.vue";
 
 export default {
   components: { NewsCard, SkeltonLoading },
@@ -31,9 +31,9 @@ export default {
     this.bookMarkedData = data;
   },
   mounted() {
-    this.loading = true
+    this.loading = true;
     setTimeout(() => {
-      this.loading = false
+      this.loading = false;
     }, 5000);
   },
   methods: {
@@ -41,11 +41,11 @@ export default {
       this.bookMarkedData.splice(index, 1);
       localStorage.setItem("myBookmark", JSON.stringify(this.bookMarkedData));
     },
-  }
+  },
 };
 </script>
 
-  <style>
+<style>
 .bookmark-container {
   width: 90%;
   margin: auto;
@@ -75,4 +75,3 @@ export default {
   }
 }
 </style>
-  

@@ -23,9 +23,9 @@ const store = createStore({
     },
   },
   getters: {
-    getPageCount (state) {
-      return state.pageSize
-  },
+    getPageCount(state) {
+      return state.pageSize;
+    },
   },
   actions: {
     async updatePageSize({ commit }, payload) {
@@ -51,10 +51,9 @@ const store = createStore({
 
       const fetchAndCommit = async (url) => {
         const res = await fetch(url).then((res) => res.json());
-        if (res.status === 'ok') {
+        if (res.status === "ok") {
           commit("setApiData", res.articles);
         }
-        
       };
 
       if (!payload) {

@@ -11,7 +11,11 @@
     <div class="filter-dropdown">
       <select v-model="selectedCountry" @change="filterCountryOption">
         <option value="">Select Country</option>
-        <option v-for="(option, key) in countryOptions" :key="option" :value="key">
+        <option
+          v-for="(option, key) in countryOptions"
+          :key="option"
+          :value="key"
+        >
           {{ option }}
         </option>
       </select>
@@ -25,8 +29,8 @@
 </template>
 
 <script>
-import { categories } from '@/constants/categories';
-import { countries } from '@/constants/counteries';
+import { categories } from "@/constants/categories";
+import { countries } from "@/constants/counteries";
 
 export default {
   name: "FilterComponent",
@@ -36,32 +40,32 @@ export default {
       categoryOptions: categories,
       searchedValue: "",
       selectedCategory: "",
-      selectedCountry: ""
+      selectedCountry: "",
     };
   },
   methods: {
     handleSearchNews() {
-      this.$emit('getValue', {
+      this.$emit("getValue", {
         selectedCategory: this.selectedCategory,
         selectedCountry: this.selectedCountry,
-        searchedValue: this.searchedValue
-      })
+        searchedValue: this.searchedValue,
+      });
     },
     filterCategoryOption() {
-      this.$emit('getValue', {
+      this.$emit("getValue", {
         selectedCategory: this.selectedCategory,
         selectedCountry: this.selectedCountry,
-        searchedValue: this.searchedValue
-      })
+        searchedValue: this.searchedValue,
+      });
     },
-    filterCountryOption () {
-      this.$emit('getValue', {
+    filterCountryOption() {
+      this.$emit("getValue", {
         selectedCategory: this.selectedCategory,
         selectedCountry: this.selectedCountry,
-        searchedValue: this.searchedValue
-      })
-    }
-  }
+        searchedValue: this.searchedValue,
+      });
+    },
+  },
 };
 </script>
 
