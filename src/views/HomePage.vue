@@ -17,20 +17,20 @@
     </div>
     <div v-else>
       <div class="empty-state">
-        <div>No articles available. Please adjust your filters or try again later.</div>
+        <div>
+          No articles available. Please adjust your filters or try again later.
+        </div>
         <button @click="tryAgain">Try Again</button>
       </div>
     </div>
   </div>
 </template>
 
-
-
 <script>
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import FilterComponent from "@/components/FilterComponent.vue";
 import NewsCard from "@/components/NewsCard.vue";
-import SkeltonLoading from '@/components/SkeltonLoading.vue';
+import SkeltonLoading from "@/components/SkeltonLoading.vue";
 
 export default {
   components: {
@@ -46,9 +46,10 @@ export default {
   },
   computed: {
     ...mapState({
-      apiData: state => state.apiData, 
-      pageCount: state => state.pageSize
+      apiData: (state) => state.apiData,
+      errorMessage: (state) => state.errorMessage,
     }),
+    ...mapGetters(["getPageCount"]),
   },
   beforeMount() {
     this.fetchData(this.payload);
@@ -78,15 +79,16 @@ export default {
           Math.ceil(document.documentElement.scrollTop + window.innerHeight) >=
           document.documentElement.offsetHeight;
         if (bottomOfWindow) {
-          const currentpage = this.pageCount + 21
-          this.$store.dispatch('updatePageSize', currentpage)
-          this.fetchData(this.payload);
+          const currentpage = this.getPageCount + 21;
+          this.$store.dispatch("updatePageSize", currentpage);
+          this.$store.dispatch("fetchApiData", this.payload);
         }
       };
     },
-    tryAgain () {
-      window.location.reload()
-    }
+
+    tryAgain() {
+      window.location.reload();
+    },
   },
 };
 </script>
@@ -126,19 +128,19 @@ export default {
 
 @media (max-width: 1200px) {
   .news-card-container {
-    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 900px) {
   .news-card-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
   .news-card-container {
-    grid-template-columns: repeat(1, 1fr); /* 1 card per row */
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 </style>
