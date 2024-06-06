@@ -22,17 +22,14 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      article: null,
-    };
-  },
-  created() {
-    this.article = JSON.parse(localStorage.getItem("deatiledArticle"));
-  },
-};
+<script setup>
+import { ref, onBeforeMount } from 'vue';
+
+const article = ref(null);
+
+onBeforeMount(() => {
+  article.value = JSON.parse(localStorage.getItem('deatiledArticle'));
+});
 </script>
 
 <style scoped>

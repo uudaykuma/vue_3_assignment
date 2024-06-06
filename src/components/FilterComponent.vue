@@ -28,44 +28,40 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { categories } from "@/constants/categories";
 import { countries } from "@/constants/counteries";
+import { ref, defineEmits } from "vue";
 
-export default {
-  name: "FilterComponent",
-  data() {
-    return {
-      countryOptions: countries,
-      categoryOptions: categories,
-      searchedValue: "",
-      selectedCategory: "",
-      selectedCountry: "",
-    };
-  },
-  methods: {
-    handleSearchNews() {
-      this.$emit("getValue", {
-        selectedCategory: this.selectedCategory,
-        selectedCountry: this.selectedCountry,
-        searchedValue: this.searchedValue,
-      });
-    },
-    filterCategoryOption() {
-      this.$emit("getValue", {
-        selectedCategory: this.selectedCategory,
-        selectedCountry: this.selectedCountry,
-        searchedValue: this.searchedValue,
-      });
-    },
-    filterCountryOption() {
-      this.$emit("getValue", {
-        selectedCategory: this.selectedCategory,
-        selectedCountry: this.selectedCountry,
-        searchedValue: this.searchedValue,
-      });
-    },
-  },
+const countryOptions = ref(countries);
+const categoryOptions = ref(categories);
+const searchedValue = ref("");
+const selectedCategory = ref("");
+const selectedCountry = ref("");
+
+const emit = defineEmits(['getValue'])
+
+const handleSearchNews = () => {
+  emit('getValue', {
+    selectedCategory: selectedCategory.value,
+    selectedCountry: selectedCountry.value,
+    searchedValue: searchedValue.value,
+  });
+};
+
+const filterCategoryOption = () => {
+  emit("getValue", {
+    selectedCategory: selectedCategory.value,
+    selectedCountry: selectedCountry.value,
+    searchedValue: searchedValue.value,
+  });
+};
+const filterCountryOption = () => {
+  emit("getValue", {
+    selectedCategory: selectedCategory.value,
+    selectedCountry: selectedCountry.value,
+    searchedValue: searchedValue.value,
+  });
 };
 </script>
 

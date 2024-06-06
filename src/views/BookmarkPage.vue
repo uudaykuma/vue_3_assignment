@@ -14,35 +14,58 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import NewsCard from "@/components/NewsCard.vue";
 import SkeltonLoading from "@/components/SkeltonLoading.vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 
-export default {
-  components: { NewsCard, SkeltonLoading },
-  data() {
-    return {
-      bookMarkedData: [],
-      loading: false,
-    };
-  },
-  async created() {
-    const data = await JSON.parse(localStorage.getItem("myBookmark"));
-    this.bookMarkedData = data;
-  },
-  mounted() {
-    this.loading = true;
+const bookMarkedData = ref([])
+const loading = ref(false)
+
+const removeBookmark = (index) => {
+  bookMarkedData.value.splice(index, 1);
+  localStorage.setItem("myBookmark", JSON.stringify(bookMarkedData.value));
+}
+
+
+onBeforeMount(async () => {
+  const data = await JSON.parse(localStorage.getItem("myBookmark"));
+  bookMarkedData.value = data;
+})
+
+onMounted(() => {
+  loading.value = true;
     setTimeout(() => {
-      this.loading = false;
-    }, 5000);
-  },
-  methods: {
-    removeBookmark(index) {
-      this.bookMarkedData.splice(index, 1);
-      localStorage.setItem("myBookmark", JSON.stringify(this.bookMarkedData));
-    },
-  },
-};
+      loading.value = false;
+    }, 3000);
+})
+
+
+// export default {
+//   components: { NewsCard, SkeltonLoading },
+//   data() {
+//     return {
+//       bookMarkedData: [],
+//       loading: false,
+//     };
+//   },
+//   async created() {
+//     const data = await JSON.parse(localStorage.getItem("myBookmark"));
+//     this.bookMarkedData = data;
+//   },
+//   mounted() {
+//     this.loading = true;
+//     setTimeout(() => {
+//       this.loading = false;
+//     }, 5000);
+//   },
+//   methods: {
+//     removeBookmark(index) {
+//       this.bookMarkedData.splice(index, 1);
+//       localStorage.setItem("myBookmark", JSON.stringify(this.bookMarkedData));
+//     },
+//   },
+// };
 </script>
 
 <style>

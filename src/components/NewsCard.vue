@@ -29,47 +29,41 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ["article"],
-  data() {
-    return {
-      isBookmarked: false,
-    };
-  },
-  mounted() {
-    const bookmarks = JSON.parse(localStorage.getItem("myBookmark")) || [];
-    this.isBookmarked = bookmarks.some(
-      (item) => item.title === this.article.title
-    );
-  },
-  methods: {
-    handleBookmark() {
-      let bookmarks = JSON.parse(localStorage.getItem("myBookmark")) || [];
-      const index = bookmarks.findIndex(
-        (item) => item.title === this.article.title
-      );
+<script setup>
+import { defineProps, ref, onMounted, defineEmits } from 'vue';
+import { useRouter } from 'vue-router';
 
-      if (index !== -1) {
-        bookmarks.splice(index, 1);
-        this.$emit("remove-bookmark", index);
-      } else {
-        bookmarks.push(this.article);
-      }
+const props = defineProps({
+  article: {}
+});
 
-      localStorage.setItem("myBookmark", JSON.stringify(bookmarks));
-      this.isBookmarked = bookmarks.some(
-        (item) => item.title === this.article.title
-      );
-    },
-    goToDetailPage() {
-      localStorage.setItem("deatiledArticle", JSON.stringify(this.article));
-      this.$router.push({
-        name: "Detail",
-        params: { title: this.article.title },
-      });
-    },
-  },
+const isBookmarked = ref(false);
+const router = useRouter();
+const emit = defineEmits(['remove-bookmark']);
+
+onMounted(() => {
+  const bookmarks = JSON.parse(localStorage.getItem("myBookmark")) || [];
+  isBookmarked.value = bookmarks.some((item) => item.title === props.article.title);
+});
+
+const handleBookmark = () => {
+  let bookmarks = JSON.parse(localStorage.getItem("myBookmark")) || [];
+  const index = bookmarks.findIndex((item) => item.title === props.article.title);
+
+  if (index !== -1) {
+    bookmarks.splice(index, 1);
+    emit("remove-bookmark", index);
+  } else {
+    bookmarks.push(props.article);
+  }
+
+  localStorage.setItem("myBookmark", JSON.stringify(bookmarks));
+  isBookmarked.value = bookmarks.some((item) => item.title === props.article.title);
+};
+
+const goToDetailPage = () => {
+  localStorage.setItem("deatiledArticle", JSON.stringify(props.article));
+  router.push({ name: "Detail", params: { title: props.article.title } });
 };
 </script>
 

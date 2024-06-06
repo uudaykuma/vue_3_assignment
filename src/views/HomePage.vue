@@ -26,71 +26,61 @@
   </div>
 </template>
 
-<script>
-import { mapGetters, mapState } from "vuex";
-import FilterComponent from "@/components/FilterComponent.vue";
-import NewsCard from "@/components/NewsCard.vue";
-import SkeltonLoading from "@/components/SkeltonLoading.vue";
+<script setup>
+import { ref, onBeforeMount, onMounted, computed } from 'vue';
+import { useStore } from 'vuex';
+import FilterComponent from '@/components/FilterComponent.vue';
+import NewsCard from '@/components/NewsCard.vue';
+import SkeltonLoading from '@/components/SkeltonLoading.vue';
 
-export default {
-  components: {
-    FilterComponent,
-    NewsCard,
-    SkeltonLoading,
-  },
-  data() {
-    return {
-      payload: {},
-      loading: false,
-    };
-  },
-  computed: {
-    ...mapState({
-      apiData: (state) => state.apiData,
-      errorMessage: (state) => state.errorMessage,
-    }),
-    ...mapGetters(["getPageCount"]),
-  },
-  beforeMount() {
-    this.fetchData(this.payload);
-  },
-  mounted() {
-    this.scroll();
-  },
-  methods: {
-    getFilterValue(value) {
-      this.payload = value;
-      this.fetchData(value);
-    },
-    fetchData(payload) {
-      this.loading = true;
-      this.$store
-        .dispatch("fetchApiData", payload)
-        .then(() => {
-          this.loading = false;
-        })
-        .catch(() => {
-          this.loading = false;
-        });
-    },
-    scroll() {
-      window.onscroll = () => {
-        let bottomOfWindow =
-          Math.ceil(document.documentElement.scrollTop + window.innerHeight) >=
-          document.documentElement.offsetHeight;
-        if (bottomOfWindow) {
-          const currentpage = this.getPageCount + 21;
-          this.$store.dispatch("updatePageSize", currentpage);
-          this.$store.dispatch("fetchApiData", this.payload);
-        }
-      };
-    },
+const store = useStore();
 
-    tryAgain() {
-      window.location.reload();
-    },
-  },
+const payload = ref({});
+const loading = ref(false);
+
+const apiData = computed(() => store.state.apiData);
+const getPageCount = computed(() => store.getters.getPageCount);
+
+const fetchData = async (payload) => {
+  loading.value = true;
+  try {
+    await store.dispatch('fetchApiData', payload);
+  } catch (error) {
+    // Handle error if needed
+  } finally {
+    loading.value = false;
+  }
 };
+
+const getFilterValue = (value) => {
+  payload.value = value;
+  fetchData(value);
+};
+
+const tryAgain = () => {
+  window.location.reload();
+};
+
+const scroll = () => {
+  window.onscroll = async () => {
+    let bottomOfWindow =
+      Math.ceil(document.documentElement.scrollTop + window.innerHeight) >=
+      document.documentElement.offsetHeight;
+    if (bottomOfWindow) {
+      const currentpage = getPageCount.value + 21;
+      await store.dispatch('updatePageSize', currentpage);
+      await store.dispatch('fetchApiData', payload.value);
+    }
+  };
+};
+
+onBeforeMount(() => {
+  fetchData(payload.value);
+});
+
+onMounted(() => {
+  scroll();
+});
 </script>
 
 <style scoped>
