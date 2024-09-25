@@ -7,6 +7,6 @@ spec:
     app: vue-app
   ports:
     - protocol: TCP
-      port: 80  # External port
-      targetPort: 80  # Container port
-  type: LoadBalancer  # This will create an external IP (for cloud) or NodePort for local cluster
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
