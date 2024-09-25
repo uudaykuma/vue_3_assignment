@@ -5,6 +5,9 @@
       <skelton-loading />
     </div>
     <div v-else-if="apiData && apiData.length">
+      <div>
+        Test
+      </div>
       <div class="home-container">
         <div class="news-card-container">
           <news-card
