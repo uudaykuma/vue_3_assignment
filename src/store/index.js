@@ -32,7 +32,7 @@ const store = createStore({
       commit("setPageSize", payload);
     },
     async fetchApiData({ state, commit }, payload) {
-      console.log('testing vue app')
+      alert('testing vue app')
       const myKey = process.env.VUE_APP_API_KEYS;
       const baseUrl = "https://newsapi.org/v2";
       const defaultEndpoint = `${baseUrl}/everything?q=all&pageSize=${state.pageSize}&apiKey=${myKey}`;
