@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vue-app
+  namespace: vue-app-namespace  # Add the namespace here
   labels:
     app: vue-app
 spec:
